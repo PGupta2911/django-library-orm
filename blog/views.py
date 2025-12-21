@@ -1,12 +1,12 @@
-from django.shortcuts import render,redirect
-from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.csrf import csrf_exempt
+
+from library.models import Book
 
 from .models import Article
-from library.models import Book   
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import get_object_or_404, render
+
 
 @login_required
 def manage_blog(request):
