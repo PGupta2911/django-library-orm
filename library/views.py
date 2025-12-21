@@ -8,8 +8,6 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 
 
-
-
 def signup_view(request):
     if request.method == "POST":
         username = request.POST['username']
@@ -64,10 +62,6 @@ def logout_view(request):
     return redirect('/login/')
     
 
-from django.core.paginator import Paginator
-from django.contrib.auth.decorators import login_required
-from .models import Author, Book
-
 @login_required
 def dashboard(request):
     author = Author.objects.get(user=request.user)
@@ -97,6 +91,14 @@ def add_book(request):
         )
         return redirect('/dashboard/')
     return render(request, 'add_book.html')
+
+@login_required
+def book_detail(request, book_id):
+    author = Author.objects.get(user=request.user)
+    book = Book.objects.get(id=book_id, author=author)
+
+    return render(request, 'book_detail.html', {'book': book})
+
 
 
 

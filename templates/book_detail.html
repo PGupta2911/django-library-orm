@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+
+      <div class="card shadow-lg border-0">
+        
+        <!-- IMAGE -->
+        <div class="text-center bg-light p-3">
+          <img 
+            src="{{ book.cover_image.url }}"
+            class="img-fluid rounded"
+            style="max-height: 420px; object-fit: contain;"
+            alt="{{ book.title }}"
+          >
+        </div>
+
+        <!-- BODY -->
+        <div class="card-body">
+          <h3 class="card-title fw-bold">{{ book.title }}</h3>
+
+          <span class="badge bg-primary mb-3">
+            {{ book.author.user.username }}
+          </span>
+
+          <p class="card-text mt-3 text-muted" style="line-height: 1.7;">
+            {{ book.description }}
+          </p>
+
+          <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary mt-3">
+            ← Back to Dashboard
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
