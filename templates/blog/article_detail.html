@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-body">
+
+      <h2>{{ article.title }}</h2>
+      <p class="text-muted">
+        By {{ article.author }} • {{ article.created_at|date:"d M Y" }}
+      </p>
+
+      <hr>
+
+      <p style="white-space: pre-line;">
+        {{ article.content }}
+      </p>
+
+      <a href="{% url 'blog:manage_blog' %}" class="btn btn-secondary mt-3">
+        ← Back to Articles
+      </a>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

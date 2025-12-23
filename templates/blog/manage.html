@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+<div class="container mt-4">
+
+<!-- ================= BOOKS TABLE ================= -->
+<div class="card mb-4 shadow">
+  <div class="card-header bg-dark text-white d-flex justify-content-between">
+    <span>Books</span>
+    <button class="btn btn-success btn-sm" onclick="addBook()">Add Book</button>
+  </div>
+
+  <div class="card-body">
+    <table class="table table-bordered" id="bookTable">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for book in books %}
+        <tr id="book-{{ book.id }}">
+          <td>{{ book.title }}</td>
+          <td>{{ book.author }}</td>
+          <td>
+            <button class="btn btn-danger btn-sm"
+              onclick="deleteBook({{ book.id }})">Delete</button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ================= ARTICLES TABLE ================= -->
+<div class="card shadow mt-4">
+  <div class="card-header bg-secondary text-white d-flex justify-content-between">
+    <span>Articles</span>
+    <a href="{% url 'blog:add_article_page' %}" class="btn btn-success btn-sm">
+      Add Article
+    </a>
+  </div>
+
+  <div class="card-body">
+  <table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Content</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for article in articles %}
+    <tr id="article-{{ article.id }}">
+      <td>{{ article.title }}</td>
+
+      <td>{{ article.author }}</td>
+
+      <td>
+        <a href="{% url 'blog:article_detail' article.id %}"
+           class="btn btn-primary btn-sm">
+          Read
+        </a>
+      </td>
+
+      <td>
+        <button class="btn btn-danger btn-sm"
+                onclick="deleteArticle({{ article.id }})">
+          Delete
+        </button>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="4" class="text-center text-muted">
+        No articles found
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+  </div>
+</div>
+
+
+{% endblock %}

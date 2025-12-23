@@ -17,6 +17,11 @@
           {{ book.description|truncatechars:100 }}
         </p>
 
+        <a href="{% url 'book_detail' book.id %}"
+          class="btn btn-sm btn-outline-primary">
+          Read more
+       </a>
+
         <span class="badge bg-primary">
           {{ book.author.user.username }}
         </span>
@@ -68,6 +73,8 @@
         <span class="page-link">Next</span>
       </li>
     {% endif %}
+
+
 
   </ul>
 </nav>

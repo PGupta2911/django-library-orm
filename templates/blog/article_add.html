@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      Add New Article
+    </div>
+
+    <div class="card-body">
+      <!-- 🔴 ACTION IS MANDATORY -->
+      <form method="POST" action="/blog/add-article/">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label class="form-label">Article Title</label>
+          <input type="text" name="title" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Author Name</label>
+          <input type="text" name="author" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Article Content</label>
+          <textarea
+             name="content"
+             class="form-control"
+             rows="6"
+             placeholder="Write your article here..."
+             required>       
+            </textarea>
+          </div>
+
+
+        <button type="submit" class="btn btn-success">
+          Add Article
+        </button>
+
+        <a href="{% url 'blog:manage_blog' %}"
+           class="btn btn-outline-dark ms-2">
+          Manage Books / Articles
+        </a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
