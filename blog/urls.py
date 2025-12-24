@@ -11,6 +11,7 @@ urlpatterns = [
     path("delete-article/<int:id>/", views.delete_article, name="delete_article"),
     path("books/delete/<int:book_id>/", views.delete_book, name="delete_book"),
     path("article/<int:id>/", views.article_detail, name="article_detail"),
-
+    path("add-article-ajax/", views.add_article_ajax, name="add_article_ajax"),
+    path("add-book-ajax/", views.add_book_ajax, name="add_book_ajax")
 ]
 

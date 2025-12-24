@@ -1,95 +1,163 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block content %}
+
+<!-- CSRF TOKEN FOR AJAX -->
 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
 <div class="container mt-4">
 
-<!-- ================= BOOKS TABLE ================= -->
-<div class="card mb-4 shadow">
-  <div class="card-header bg-dark text-white d-flex justify-content-between">
-    <span>Books</span>
-    <button class="btn btn-success btn-sm" onclick="addBook()">Add Book</button>
+  <!-- ================= BOOKS TABLE ================= -->
+  <div class="card mb-4 shadow">
+    <div class="card-header bg-dark text-white d-flex justify-content-between">
+      <span>Books</span>
+      <button class="btn btn-success btn-sm" onclick="openBookModal()">Add Book</button>
+    </div>
+
+    <div class="card-body">
+      <table class="table table-bordered" id="bookTable">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for book in books %}
+          <tr id="book-{{ book.id }}">
+            <td>{{ book.title }}</td>
+            <td>{{   book.author.user.username }}</td>
+            <td>
+              <button class="btn btn-danger btn-sm"
+                      onclick="deleteBook({{ book.id }})">
+                Delete
+              </button>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="3" class="text-center text-muted">No books found</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <div class="card-body">
-    <table class="table table-bordered" id="bookTable">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Author</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for book in books %}
-        <tr id="book-{{ book.id }}">
-          <td>{{ book.title }}</td>
-          <td>{{ book.author }}</td>
-          <td>
-            <button class="btn btn-danger btn-sm"
-              onclick="deleteBook({{ book.id }})">Delete</button>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <!-- ================= ARTICLES TABLE ================= -->
+  <div class="card shadow">
+    <div class="card-header bg-secondary text-white d-flex justify-content-between">
+      <span>Articles</span>
+
+      <!-- 🔥 IMPORTANT BUTTON -->
+      <button class="btn btn-success btn-sm"
+              onclick="openArticleModal()">
+        Add Article
+      </button>
+    </div>
+
+    <div class="card-body">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Content</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for article in articles %}
+          <tr id="article-{{ article.id }}">
+            <td>{{ article.title }}</td>
+            <td>{{  article.author  }}</td>
+            <td>
+              <a href="{% url 'blog:article_detail' article.id %}"
+                class="btn btn-sm btn-outline-primary">
+                View
+              </a>
+            </td> 
+            <td>
+              <button class="btn btn-danger btn-sm"
+                      onclick="deleteArticle({{ article.id }})">
+                Delete
+              </button>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="text-center text-muted">
+              No articles found
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ================= ADD ARTICLE MODAL ================= -->
+<div class="modal fade" id="articleModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Add Article</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form
+          id="articleForm"
+          action="javascript:void(0);"
+          method="post"
+>
+          {% csrf_token %}
+          <input type="text" name="title" class="form-control mb-2" placeholder="Title">
+          <input type="text" name="author" class="form-control mb-2 "placeholder="Author Name">
+          <textarea name="content" class="form-control mb-2" placeholder="Content"></textarea>
+          <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+      </div>
+
+
+    </div>
   </div>
 </div>
 
-<!-- ================= ARTICLES TABLE ================= -->
-<div class="card shadow mt-4">
-  <div class="card-header bg-secondary text-white d-flex justify-content-between">
-    <span>Articles</span>
-    <a href="{% url 'blog:add_article_page' %}" class="btn btn-success btn-sm">
-      Add Article
-    </a>
-  </div>
+<!-- ================= ADD BOOK MODAL ================= -->
 
-  <div class="card-body">
-  <table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Author</th>
-      <th>Content</th>
-      <th>Action</th>
-    </tr>
-  </thead>
+<div class="modal fade" id="bookModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Add Book</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
 
-  <tbody>
-    {% for article in articles %}
-    <tr id="article-{{ article.id }}">
-      <td>{{ article.title }}</td>
+      <div class="modal-body">
+        <form id="bookForm" enctype="multipart/form-data">
+          {% csrf_token %}
 
-      <td>{{ article.author }}</td>
+          <input type="text" name="title" class="form-control mb-2" placeholder="Book Title" required>
 
-      <td>
-        <a href="{% url 'blog:article_detail' article.id %}"
-           class="btn btn-primary btn-sm">
-          Read
-        </a>
-      </td>
+          <input type="file" name="image" class="form-control mb-3">
 
-      <td>
-        <button class="btn btn-danger btn-sm"
-                onclick="deleteArticle({{ article.id }})">
-          Delete
-        </button>
-      </td>
-    </tr>
-    {% empty %}
-    <tr>
-      <td colspan="4" class="text-center text-muted">
-        No articles found
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 
+
+<!-- 🔥 VERY IMPORTANT: JS MUST LOAD AT END -->
+<script src="{% static 'js/blog.js' %}"></script>
 
 {% endblock %}
