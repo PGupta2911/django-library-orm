@@ -1,0 +1,16 @@
+.book-card {
+  border-radius: 14px;
+  transition: all 0.25s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+}
+
+.book-img {
+  height: 240px;
+  object-fit: cover;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
