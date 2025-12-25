@@ -4,10 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, render
-from django.utils import timezone
+
+from blog.utils.email import send_book_added_email
 
 from .models import Author, Book
-from blog.utils.email import send_book_added_email
 
 
 def signup_view(request):
