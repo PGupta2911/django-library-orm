@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Article Added Successfully</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f4f6f8; font-family: Arial, Helvetica, sans-serif;">
+
+  <table width="100%" cellpadding="0" cellspacing="0" style="padding:30px 0;">
+    <tr>
+      <td align="center">
+
+        <!-- CARD -->
+        <table width="600" cellpadding="0" cellspacing="0"
+               style="background:#ffffff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.08); padding:30px;">
+
+          <!-- HEADER -->
+          <tr>
+            <td style="text-align:center; padding-bottom:20px;">
+              <h2 style="margin:0; color:#2c3e50;">
+                ✅ Article Added Successfully
+              </h2>
+            </td>
+          </tr>
+
+          <!-- GREETING -->
+          <tr>
+            <td style="font-size:15px; color:#333; padding-bottom:10px;">
+              Hello <strong>{{ user.get_full_name|default:user.username }}</strong>,
+            </td>
+          </tr>
+
+          <!-- MESSAGE -->
+          <tr>
+            <td style="font-size:14px; color:#555; padding-bottom:20px;">
+              Your article has been added successfully to the Library App.
+              Here are the details:
+            </td>
+          </tr>
+
+          <!-- DETAILS BOX -->
+          <tr>
+            <td>
+              <table width="100%" cellpadding="10" cellspacing="0"
+                     style="background:#f9fafb; border:1px solid #e1e4e8; border-radius:6px; font-size:14px;">
+                <tr>
+                  <td width="120"><strong>Title</strong></td>
+                  <td>{{ article.title }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Author</strong></td>
+                  <td>{{ article.author }}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- FOOTER MESSAGE -->
+          <tr>
+            <td style="padding-top:25px; font-size:14px; color:#555;">
+              Keep contributing and growing your library 🚀
+            </td>
+          </tr>
+
+          <!-- SIGNATURE -->
+          <tr>
+            <td style="padding-top:15px; font-size:13px; color:#777;">
+              Regards,<br>
+              <strong>Library App Team</strong>
+            </td>
+          </tr>
+
+        </table>
+        <!-- END CARD -->
+
+        <!-- FOOTER -->
+        <div style="margin-top:15px; font-size:12px; color:#999;">
+          © {{ now|default:"2025" }} Library App. All rights reserved.
+        </div>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

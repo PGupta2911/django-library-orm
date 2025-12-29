@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, render
-from django.utils import timezone
+
+from blog.utils.email import send_book_added_email
 
 from .models import Author, Book
 
@@ -81,17 +82,29 @@ def dashboard(request):
 
 @login_required
 def add_book(request):
-    if request.method == 'POST':
-        author = Author.objects.get(user=request.user)
-        Book.objects.create(
-            author=author,title=request.POST['title'],
-            description=request.POST['description'],
-            cover_image=request.FILES['cover'],
-            is_published='publish' in request.POST,
-            published_date=timezone.now() if 'publish' in request.POST else None
+    if request.method == "POST":
+
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+        cover = request.FILES.get("cover")
+
+        author, _ = Author.objects.get_or_create(
+            user=request.user
         )
-        return redirect('/dashboard/')
-    return render(request, 'add_book.html')
+
+        book = Book.objects.create(
+            title=title,
+            description=description,
+            cover_image=cover,
+            author=author
+        )
+
+        send_book_added_email(request.user, book)
+
+        return redirect("/dashboard/")
+
+    return render(request, "add_book.html")
+
 
 @login_required
 def book_detail(request, book_id):
